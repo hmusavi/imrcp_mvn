@@ -3,6 +3,10 @@
 
 package vector_tile;
 
+import java.io.IOException;
+
+import com.google.protobuf.CodedOutputStream;
+
 public final class VectorTile {
   private VectorTile() {}
   public static void registerAllExtensions(
@@ -951,6 +955,16 @@ public final class VectorTile {
       public static com.google.protobuf.Parser<Value> parser() {
         return DEFAULT_INSTANCE.getParserForType();
       }
+	@Override
+	public void writeTo(CodedOutputStream output) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public int getSerializedSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
     }
 
     public interface FeatureOrBuilder extends
@@ -1823,6 +1837,16 @@ public final class VectorTile {
       public static com.google.protobuf.Parser<Feature> parser() {
         return DEFAULT_INSTANCE.getParserForType();
       }
+	@Override
+	public void writeTo(CodedOutputStream output) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public int getSerializedSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
     }
 
     public interface LayerOrBuilder extends 
@@ -3388,6 +3412,16 @@ public final class VectorTile {
       public static com.google.protobuf.Parser<Layer> parser() {
         return DEFAULT_INSTANCE.getParserForType();
       }
+	@Override
+	public void writeTo(CodedOutputStream output) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public int getSerializedSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
     }
 
     public static final int LAYERS_FIELD_NUMBER = 3;
@@ -3782,6 +3816,16 @@ public final class VectorTile {
     public static com.google.protobuf.Parser<Tile> parser() {
       return DEFAULT_INSTANCE.getParserForType();
     }
+	@Override
+	public void writeTo(CodedOutputStream output) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public int getSerializedSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
   }
 
 

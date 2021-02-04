@@ -164,7 +164,6 @@ public abstract class BaseBlock extends HttpServlet implements ImrcpBlock, Runna
 		setConfig();
 	}
 	
-	@Override
 	public void notify(String sMessageName, String... sResource)
 	{
 		String[] sMessage = new String[2 + sResource.length];
@@ -175,13 +174,11 @@ public abstract class BaseBlock extends HttpServlet implements ImrcpBlock, Runna
 	}
 	
 	
-	@Override
 	public void receive(String[] sMessage)
 	{
 		m_oNotifications.queue(sMessage);
 	}
 	
-	@Override
 	public void register()
 	{
 		Directory.getInstance().register(this, m_oConfig.getStringArray("subscribe", null));
@@ -276,8 +273,7 @@ public abstract class BaseBlock extends HttpServlet implements ImrcpBlock, Runna
 	}
 	
 	
-	@Override 
-    public BlockConfig getConfig()
+	public BlockConfig getConfig()
 	{
 		return m_oConfig;
 	}
@@ -346,7 +342,6 @@ public abstract class BaseBlock extends HttpServlet implements ImrcpBlock, Runna
 	 * execute() the block's status will be RUNNING, once it has return the status
 	 * will go back to IDLE.
 	 */
-	@Override
 	public void run()
 	{
 		if (checkAndSetStatus(RUNNING, IDLE)) // check if IDLE, if it is set to RUNNING and execute the block's task
@@ -418,7 +413,6 @@ public abstract class BaseBlock extends HttpServlet implements ImrcpBlock, Runna
 	 *
 	 * @return Instance Name
 	 */
-	@Override
 	public String getName()
 	{
 		return m_sInstanceName;
@@ -430,7 +424,6 @@ public abstract class BaseBlock extends HttpServlet implements ImrcpBlock, Runna
 	 *
 	 * @param sName the new name of the block
 	 */
-	@Override
 	public void setName(String sName)
 	{
 		m_sInstanceName = sName;
