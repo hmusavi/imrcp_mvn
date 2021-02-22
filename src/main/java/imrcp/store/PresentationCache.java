@@ -393,7 +393,8 @@ public class PresentationCache extends FileCache
 	@Override
 	protected FileWrapper getNewFileWrapper()
 	{
-		return new XshpWrapper();
+//		return new XshpWrapper();
+		return null;
 	}
 //	
 //	class DataByteArray

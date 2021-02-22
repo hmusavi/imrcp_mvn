@@ -20,8 +20,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import vector_tile.VectorTile;
-import vector_tile.VectorTile.Tile.GeomType;
+//import vector_tile.VectorTile;
+//import vector_tile.VectorTile.Tile.GeomType;
 
 /**
  *
@@ -192,9 +192,9 @@ public abstract class TileCache extends FileCache
 		Collections.sort(oAreas);
 		
 		
-		VectorTile.Tile.Builder oTileBuilder = VectorTile.Tile.newBuilder();
-		VectorTile.Tile.Layer.Builder oLayerBuilder = VectorTile.Tile.Layer.newBuilder();
-		VectorTile.Tile.Feature.Builder oFeatureBuilder = VectorTile.Tile.Feature.newBuilder();
+//		VectorTile.Tile.Builder oTileBuilder = VectorTile.Tile.newBuilder();
+//		VectorTile.Tile.Layer.Builder oLayerBuilder = VectorTile.Tile.Layer.newBuilder();
+//		VectorTile.Tile.Feature.Builder oFeatureBuilder = VectorTile.Tile.Feature.newBuilder();
 		
 		int nExtent = Mercator.getExtent(nZ);
 		double dPrevVal;
@@ -207,9 +207,9 @@ public abstract class TileCache extends FileCache
 			TileArea oArea = oAreas.get(nIndex);
 			dPrevVal = oArea.m_dGroupValue;
 			
-			if (nZ <= oFile.m_nZoom)
-				TileUtil.addPolygon(oFeatureBuilder, nCur, dBounds, nExtent, oArea, nPoints);
-			else
+//			if (nZ <= oFile.m_nZoom)
+//				TileUtil.addPolygon(oFeatureBuilder, nCur, dBounds, nExtent, oArea, nPoints);
+//			else
 			{
 				Path2D.Double oTilePath = new Path2D.Double(); // create clipping boundary
 				oTilePath.moveTo(dBounds[0], dBounds[3]);
@@ -219,28 +219,28 @@ public abstract class TileCache extends FileCache
 				oTilePath.closePath();
 				Area oTile = new Area(oTilePath);
 				oTile.intersect(oArea);
-				if (!oTile.isEmpty())
-					TileUtil.addPolygon(oFeatureBuilder, nCur, dBounds, nExtent, oTile, nPoints);
+//				if (!oTile.isEmpty())
+//					TileUtil.addPolygon(oFeatureBuilder, nCur, dBounds, nExtent, oTile, nPoints);
 			}
 
-			if (nIndex == 0 || oAreas.get(nIndex - 1).m_dGroupValue != dPrevVal)
-			{ // write layer at end of list or when group value will change
-				oFeatureBuilder.setType(GeomType.POLYGON);
-				oLayerBuilder.clear();
-				oLayerBuilder.setVersion(2);
-				oLayerBuilder.setName(String.format("%s%1.0f", Integer.toString(nRequestType, 36).toUpperCase(), dPrevVal));
-				oLayerBuilder.setExtent(nExtent);
-				oLayerBuilder.addFeatures(oFeatureBuilder.build());
-				oTileBuilder.addLayers(oLayerBuilder.build());
-				oFeatureBuilder.clear();
-				nCur[0] = nCur[1] = 0;
-			}
+//			if (nIndex == 0 || oAreas.get(nIndex - 1).m_dGroupValue != dPrevVal)
+//			{ // write layer at end of list or when group value will change
+//				oFeatureBuilder.setType(GeomType.POLYGON);
+//				oLayerBuilder.clear();
+//				oLayerBuilder.setVersion(2);
+//				oLayerBuilder.setName(String.format("%s%1.0f", Integer.toString(nRequestType, 36).toUpperCase(), dPrevVal));
+//				oLayerBuilder.setExtent(nExtent);
+//				oLayerBuilder.addFeatures(oFeatureBuilder.build());
+//				oTileBuilder.addLayers(oLayerBuilder.build());
+//				oFeatureBuilder.clear();
+//				nCur[0] = nCur[1] = 0;
+//			}
 		}
 
 		oResponse.setContentType("application/x-protobuf");
 //		oResponse.setHeader("Last-Modified", m_sLastModified);
-		if (oTileBuilder.getLayersCount() > 0)
-			oTileBuilder.build().writeTo(oResponse.getOutputStream());
+//		if (oTileBuilder.getLayersCount() > 0)
+//			oTileBuilder.build().writeTo(oResponse.getOutputStream());
 		
 	}
 	

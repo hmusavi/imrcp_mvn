@@ -1,0 +1,5 @@
+To view doxygen files:
+1. download doxygen.zip file to your machine
+2. extract/unzip the file
+3. Open docs/html/index.html file with your browser. Be patient, it may take a couple of minutes for the page to load completely
+

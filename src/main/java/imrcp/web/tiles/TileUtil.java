@@ -11,7 +11,7 @@ import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.text.DecimalFormat;
 import java.util.BitSet;
-import vector_tile.VectorTile;
+//import vector_tile.VectorTile;
 
 /**
  *
@@ -45,164 +45,164 @@ public abstract class TileUtil
 		return (int)Math.round((dVal - dMin) * dExtent / (dMax - dMin));
 	}
 	
-	public static void addPolygon(VectorTile.Tile.Feature.Builder oFeatureBuilder, int[] nCur, double[] dMercBounds, int nExtent,Area oPoly, int[] nPointBuffer)
-	{		
-		double[] dCoords = new double[2];
-		double[] dPrev = new double[2];
-		double[] dFirst = new double[2];
-		double[] dTemp;
-		int nPosX;
-		int nPosY;
-		PathIterator oIt = oPoly.getPathIterator(null);
-		BitSet oHoles = new BitSet();
-		nPointBuffer[0] = 1;
-		
-		double dWinding = 0;
-		int nBitIndex = 0;
-		while (!oIt.isDone()) // first determine which parts of multi-path are polygons and holes
-		{
-			switch (oIt.currentSegment(dCoords))
-			{
-				case PathIterator.SEG_MOVETO:
-				{
-					dWinding = 0;
-					System.arraycopy(dCoords, 0, dFirst, 0, 2);
-					System.arraycopy(dCoords, 0, dPrev, 0, 2);
-					break;
-				}
-				case PathIterator.SEG_LINETO:
-				{
-					dWinding += ((dCoords[0] - dPrev[0]) * (dCoords[1] + dPrev[1]));
-					System.arraycopy(dCoords, 0, dPrev, 0, 2);
-					break;
-				}
-				case PathIterator.SEG_CLOSE:
-				{
-					dWinding += ((dFirst[0] - dCoords[0]) * (dFirst[1] + dCoords[1]));
-					oHoles.set(nBitIndex++, dWinding < 0); // negative winding number is hole
-					break;
-				}
-			}
-			oIt.next();
-		}
-		
-		
-		nBitIndex = 0;
-		dPrev[0] = -1;
-		dPrev[1] = -1;
-		oIt = oPoly.getPathIterator(null);
-
-		while (!oIt.isDone()) // write polygons
-		{
-			if (oHoles.get(nBitIndex++)) // skip holes
-			{
-				while (oIt.currentSegment(dCoords) != PathIterator.SEG_CLOSE)
-					oIt.next();
-			}
-			else
-			{
-				while (oIt.currentSegment(dCoords) != PathIterator.SEG_CLOSE)
-				{
-					nPosX = getPos(dCoords[0], dMercBounds[0], dMercBounds[2], nExtent, false);
-					nPosY = getPos(dCoords[1], dMercBounds[1], dMercBounds[3], nExtent, true);
-					if (dCoords[0] != dPrev[0] || dCoords[1] != dPrev[1])
-					{
-						nPointBuffer = addPoint(nPointBuffer, nPosX, nPosY);
-						dTemp = dCoords;
-						dCoords = dPrev;
-						dPrev = dTemp;
-					}
-					oIt.next();
-				}
-				writePointBuffer(oFeatureBuilder, nPointBuffer, nCur, true);
-				nPointBuffer[0] = 1;
-				dPrev[0] = -1;
-				dPrev[1] = -1;
-				
-			}
-			oIt.next();
-		}
-		
-		nBitIndex = 0;
-		dPrev[0] = -1;
-		dPrev[1] = -1;
-		oIt = oPoly.getPathIterator(null);
-
-		while (!oIt.isDone()) // write holes
-		{
-			if (!oHoles.get(nBitIndex++)) // skip polygons
-			{
-				while (oIt.currentSegment(dCoords) != PathIterator.SEG_CLOSE)
-					oIt.next();
-			}
-			else
-			{
-				while (oIt.currentSegment(dCoords) != PathIterator.SEG_CLOSE)
-				{
-					nPosX = getPos(dCoords[0], dMercBounds[0], dMercBounds[2], nExtent, false);
-					nPosY = getPos(dCoords[1], dMercBounds[1], dMercBounds[3], nExtent, true);
-					if (dCoords[0] != dPrev[0] || dCoords[1] != dPrev[1])
-					{
-						nPointBuffer = addPoint(nPointBuffer, nPosX, nPosY);
-						dTemp = dCoords;
-						dCoords = dPrev;
-						dPrev = dTemp;
-					}
-					oIt.next();
-				}
-				writePointBuffer(oFeatureBuilder, nPointBuffer, nCur, true);
-				nPointBuffer[0] = 1;
-				dPrev[0] = -1;
-				dPrev[1] = -1;
-			}
-			oIt.next();
-		}
-	}
+//	public static void addPolygon(VectorTile.Tile.Feature.Builder oFeatureBuilder, int[] nCur, double[] dMercBounds, int nExtent,Area oPoly, int[] nPointBuffer)
+//	{		
+//		double[] dCoords = new double[2];
+//		double[] dPrev = new double[2];
+//		double[] dFirst = new double[2];
+//		double[] dTemp;
+//		int nPosX;
+//		int nPosY;
+//		PathIterator oIt = oPoly.getPathIterator(null);
+//		BitSet oHoles = new BitSet();
+//		nPointBuffer[0] = 1;
+//		
+//		double dWinding = 0;
+//		int nBitIndex = 0;
+//		while (!oIt.isDone()) // first determine which parts of multi-path are polygons and holes
+//		{
+//			switch (oIt.currentSegment(dCoords))
+//			{
+//				case PathIterator.SEG_MOVETO:
+//				{
+//					dWinding = 0;
+//					System.arraycopy(dCoords, 0, dFirst, 0, 2);
+//					System.arraycopy(dCoords, 0, dPrev, 0, 2);
+//					break;
+//				}
+//				case PathIterator.SEG_LINETO:
+//				{
+//					dWinding += ((dCoords[0] - dPrev[0]) * (dCoords[1] + dPrev[1]));
+//					System.arraycopy(dCoords, 0, dPrev, 0, 2);
+//					break;
+//				}
+//				case PathIterator.SEG_CLOSE:
+//				{
+//					dWinding += ((dFirst[0] - dCoords[0]) * (dFirst[1] + dCoords[1]));
+//					oHoles.set(nBitIndex++, dWinding < 0); // negative winding number is hole
+//					break;
+//				}
+//			}
+//			oIt.next();
+//		}
+//		
+//		
+//		nBitIndex = 0;
+//		dPrev[0] = -1;
+//		dPrev[1] = -1;
+//		oIt = oPoly.getPathIterator(null);
+//
+//		while (!oIt.isDone()) // write polygons
+//		{
+//			if (oHoles.get(nBitIndex++)) // skip holes
+//			{
+//				while (oIt.currentSegment(dCoords) != PathIterator.SEG_CLOSE)
+//					oIt.next();
+//			}
+//			else
+//			{
+//				while (oIt.currentSegment(dCoords) != PathIterator.SEG_CLOSE)
+//				{
+//					nPosX = getPos(dCoords[0], dMercBounds[0], dMercBounds[2], nExtent, false);
+//					nPosY = getPos(dCoords[1], dMercBounds[1], dMercBounds[3], nExtent, true);
+//					if (dCoords[0] != dPrev[0] || dCoords[1] != dPrev[1])
+//					{
+//						nPointBuffer = addPoint(nPointBuffer, nPosX, nPosY);
+//						dTemp = dCoords;
+//						dCoords = dPrev;
+//						dPrev = dTemp;
+//					}
+//					oIt.next();
+//				}
+//				writePointBuffer(oFeatureBuilder, nPointBuffer, nCur, true);
+//				nPointBuffer[0] = 1;
+//				dPrev[0] = -1;
+//				dPrev[1] = -1;
+//				
+//			}
+//			oIt.next();
+//		}
+//		
+//		nBitIndex = 0;
+//		dPrev[0] = -1;
+//		dPrev[1] = -1;
+//		oIt = oPoly.getPathIterator(null);
+//
+//		while (!oIt.isDone()) // write holes
+//		{
+//			if (!oHoles.get(nBitIndex++)) // skip polygons
+//			{
+//				while (oIt.currentSegment(dCoords) != PathIterator.SEG_CLOSE)
+//					oIt.next();
+//			}
+//			else
+//			{
+//				while (oIt.currentSegment(dCoords) != PathIterator.SEG_CLOSE)
+//				{
+//					nPosX = getPos(dCoords[0], dMercBounds[0], dMercBounds[2], nExtent, false);
+//					nPosY = getPos(dCoords[1], dMercBounds[1], dMercBounds[3], nExtent, true);
+//					if (dCoords[0] != dPrev[0] || dCoords[1] != dPrev[1])
+//					{
+//						nPointBuffer = addPoint(nPointBuffer, nPosX, nPosY);
+//						dTemp = dCoords;
+//						dCoords = dPrev;
+//						dPrev = dTemp;
+//					}
+//					oIt.next();
+//				}
+//				writePointBuffer(oFeatureBuilder, nPointBuffer, nCur, true);
+//				nPointBuffer[0] = 1;
+//				dPrev[0] = -1;
+//				dPrev[1] = -1;
+//			}
+//			oIt.next();
+//		}
+//	}
 	
 	
-	public static void addLinestring(VectorTile.Tile.Feature.Builder oFeatureBuilder, int[] nCur, double[] dMercBounds, int nExtent, double[] dLine, int[] nPointBuffer, int... nTags)
-	{
-		int nPosX;
-		int nPosY;
-		double[] dCoords = new double[2];
-		double[] dPrev = new double[2];
-		double[] dTemp;
-		nPointBuffer[0] = 1;
-		for (int i = 3; i < dLine.length;)
-		{
-			dCoords[0] = dLine[i++];
-			dCoords[1] = dLine[i++];
-			nPosX = getPos(Mercator.lonToMeters(dCoords[0]), dMercBounds[0], dMercBounds[2], nExtent, false);
-			nPosY = getPos(Mercator.latToMeters(dCoords[1]), dMercBounds[1], dMercBounds[3], nExtent, true);
-			if (dCoords[0] != dPrev[0] || dCoords[1] != dPrev[1])
-			{
-				nPointBuffer = addPoint(nPointBuffer, nPosX, nPosY);
-				dTemp = dCoords;
-				dCoords = dPrev;
-				dPrev = dTemp;
-			}
-		}
-		writePointBuffer(oFeatureBuilder, nPointBuffer, nCur, false);
-		oFeatureBuilder.setId((long)dLine[1]);
-		oFeatureBuilder.addTags(0);
-		oFeatureBuilder.addTags((int)dLine[2]);
-		oFeatureBuilder.setType(VectorTile.Tile.GeomType.LINESTRING);
-	}
+//	public static void addLinestring(VectorTile.Tile.Feature.Builder oFeatureBuilder, int[] nCur, double[] dMercBounds, int nExtent, double[] dLine, int[] nPointBuffer, int... nTags)
+//	{
+//		int nPosX;
+//		int nPosY;
+//		double[] dCoords = new double[2];
+//		double[] dPrev = new double[2];
+//		double[] dTemp;
+//		nPointBuffer[0] = 1;
+//		for (int i = 3; i < dLine.length;)
+//		{
+//			dCoords[0] = dLine[i++];
+//			dCoords[1] = dLine[i++];
+//			nPosX = getPos(Mercator.lonToMeters(dCoords[0]), dMercBounds[0], dMercBounds[2], nExtent, false);
+//			nPosY = getPos(Mercator.latToMeters(dCoords[1]), dMercBounds[1], dMercBounds[3], nExtent, true);
+//			if (dCoords[0] != dPrev[0] || dCoords[1] != dPrev[1])
+//			{
+//				nPointBuffer = addPoint(nPointBuffer, nPosX, nPosY);
+//				dTemp = dCoords;
+//				dCoords = dPrev;
+//				dPrev = dTemp;
+//			}
+//		}
+//		writePointBuffer(oFeatureBuilder, nPointBuffer, nCur, false);
+//		oFeatureBuilder.setId((long)dLine[1]);
+//		oFeatureBuilder.addTags(0);
+//		oFeatureBuilder.addTags((int)dLine[2]);
+//		oFeatureBuilder.setType(VectorTile.Tile.GeomType.LINESTRING);
+//	}
 	
 	
-	public static void addPointToFeature(VectorTile.Tile.Feature.Builder oFeatureBuilder, int[] nCur, double[] dMercBounds, int nExtent, double dLon, double dLat)
-	{
-		int nPosX = getPos(Mercator.lonToMeters(dLon), dMercBounds[0], dMercBounds[2], nExtent, false);
-		int nPosY = getPos(Mercator.latToMeters(dLat), dMercBounds[1], dMercBounds[3], nExtent, true);
-		
-		oFeatureBuilder.addGeometry(command(MOVETO, 1));
-		int nDeltaX = nPosX - nCur[0];
-		int nDeltaY = nPosY - nCur[1];
-		oFeatureBuilder.addGeometry(parameter(nDeltaX));
-		oFeatureBuilder.addGeometry(parameter(nDeltaY));
-		nCur[0] += nDeltaX;
-		nCur[1] += nDeltaY;
-	}
+//	public static void addPointToFeature(VectorTile.Tile.Feature.Builder oFeatureBuilder, int[] nCur, double[] dMercBounds, int nExtent, double dLon, double dLat)
+//	{
+//		int nPosX = getPos(Mercator.lonToMeters(dLon), dMercBounds[0], dMercBounds[2], nExtent, false);
+//		int nPosY = getPos(Mercator.latToMeters(dLat), dMercBounds[1], dMercBounds[3], nExtent, true);
+//		
+//		oFeatureBuilder.addGeometry(command(MOVETO, 1));
+//		int nDeltaX = nPosX - nCur[0];
+//		int nDeltaY = nPosY - nCur[1];
+//		oFeatureBuilder.addGeometry(parameter(nDeltaX));
+//		oFeatureBuilder.addGeometry(parameter(nDeltaY));
+//		nCur[0] += nDeltaX;
+//		nCur[1] += nDeltaY;
+//	}
 	
 	
 //	public static void addLinestring(VectorTile.Tile.Feature.Builder oFeatureBuilder, int[] nCur, double[] dMercBounds, int nExtent, double[] dLine, int[] nPointBuffer)
@@ -246,38 +246,38 @@ public abstract class TileUtil
 	}
 	
 	
-	public static void writePointBuffer(VectorTile.Tile.Feature.Builder oFeatureBuilder, int[] nPointBuffer, int[] nCur, boolean bClose)
-	{
-		int nStart = 1;
-		int nBound = (int)(nPointBuffer[0]);
-		int nInc = 2;
-
-		oFeatureBuilder.addGeometry(command(MOVETO, 1));
-		int i = nStart;
-		int nPosX = nPointBuffer[i];
-		int nPosY = nPointBuffer[i + 1];
-		int nDeltaX = nPosX - nCur[0];
-		int nDeltaY = nPosY - nCur[1];
-		oFeatureBuilder.addGeometry(parameter(nDeltaX));
-		oFeatureBuilder.addGeometry(parameter(nDeltaY));
-		nCur[0] += nDeltaX;
-		nCur[1] += nDeltaY;
-		i += nInc;
-		oFeatureBuilder.addGeometry(command(LINETO, nPointBuffer[0] / 2 - 1));
-		for (; i != nBound; i += nInc)
-		{
-			nPosX = nPointBuffer[i];
-			nPosY = nPointBuffer[i + 1];
-			nDeltaX = nPosX - nCur[0];
-			nDeltaY = nPosY - nCur[1];
-			oFeatureBuilder.addGeometry(parameter(nDeltaX));
-			oFeatureBuilder.addGeometry(parameter(nDeltaY));
-			nCur[0] += nDeltaX;
-			nCur[1] += nDeltaY;
-		}
-		if (bClose)
-			oFeatureBuilder.addGeometry(command(CLOSEPATH, 1));
-	}
+//	public static void writePointBuffer(VectorTile.Tile.Feature.Builder oFeatureBuilder, int[] nPointBuffer, int[] nCur, boolean bClose)
+//	{
+//		int nStart = 1;
+//		int nBound = (int)(nPointBuffer[0]);
+//		int nInc = 2;
+//
+//		oFeatureBuilder.addGeometry(command(MOVETO, 1));
+//		int i = nStart;
+//		int nPosX = nPointBuffer[i];
+//		int nPosY = nPointBuffer[i + 1];
+//		int nDeltaX = nPosX - nCur[0];
+//		int nDeltaY = nPosY - nCur[1];
+//		oFeatureBuilder.addGeometry(parameter(nDeltaX));
+//		oFeatureBuilder.addGeometry(parameter(nDeltaY));
+//		nCur[0] += nDeltaX;
+//		nCur[1] += nDeltaY;
+//		i += nInc;
+//		oFeatureBuilder.addGeometry(command(LINETO, nPointBuffer[0] / 2 - 1));
+//		for (; i != nBound; i += nInc)
+//		{
+//			nPosX = nPointBuffer[i];
+//			nPosY = nPointBuffer[i + 1];
+//			nDeltaX = nPosX - nCur[0];
+//			nDeltaY = nPosY - nCur[1];
+//			oFeatureBuilder.addGeometry(parameter(nDeltaX));
+//			oFeatureBuilder.addGeometry(parameter(nDeltaY));
+//			nCur[0] += nDeltaX;
+//			nCur[1] += nDeltaY;
+//		}
+//		if (bClose)
+//			oFeatureBuilder.addGeometry(command(CLOSEPATH, 1));
+//	}
 	
 	
 	public static int[] addPoint(int[] nPoints, int nX, int nY)
@@ -332,57 +332,57 @@ public abstract class TileUtil
     }
 	
 	
-	public static void writeOutline(VectorTile.Tile.Feature.Builder oFeature, VectorTile.Tile.Layer.Builder oLayer, VectorTile.Tile.Builder oTile)
-	{
-		oFeature.clear();
-		oLayer.clear();
-		oLayer.setVersion(2);
-		oLayer.setName("tile_outline");
-		oLayer.setExtent(256);
-		oFeature.setType(VectorTile.Tile.GeomType.LINESTRING);
-		oFeature.addGeometry(command(MOVETO, 1));
-		oFeature.addGeometry(parameter(0));
-		oFeature.addGeometry(parameter(0));
-		oFeature.addGeometry(command(LINETO, 4));
-		oFeature.addGeometry(parameter(255));
-		oFeature.addGeometry(parameter(0));
-		oFeature.addGeometry(parameter(0));
-		oFeature.addGeometry(parameter(255));
-		oFeature.addGeometry(parameter(-255));
-		oFeature.addGeometry(parameter(0));
-		oFeature.addGeometry(parameter(0));
-		oFeature.addGeometry(parameter(-255));
-		oLayer.addFeatures(oFeature.build());
-		oFeature.clear();
-		oTile.addLayers(oLayer.build());
-		oLayer.clear();
-	}
-	
-	public static void writeBox(VectorTile.Tile.Feature.Builder oFeature, VectorTile.Tile.Layer.Builder oLayer, VectorTile.Tile.Builder oTile)
-	{
-		oFeature.clear();
-		oLayer.clear();
-		oLayer.setVersion(2);
-		oLayer.setName("MRMS_RTEPC_10.0");
-		oLayer.setExtent(256);
-		oFeature.setType(VectorTile.Tile.GeomType.POLYGON);
-		oFeature.addGeometry(command(MOVETO, 1));
-		oFeature.addGeometry(parameter(128));
-		oFeature.addGeometry(parameter(128));
-		oFeature.addGeometry(command(LINETO, 3));
-		oFeature.addGeometry(parameter(50));
-		oFeature.addGeometry(parameter(0));
-		oFeature.addGeometry(parameter(0));
-		oFeature.addGeometry(parameter(50));
-		oFeature.addGeometry(parameter(-50));
-		oFeature.addGeometry(parameter(0));
-		oFeature.addGeometry(command(CLOSEPATH, 1));
-		oLayer.addFeatures(oFeature.build());
-		oFeature.clear();
-		oTile.addLayers(oLayer.build());
-		oLayer.clear();
-	}
-	
+//	public static void writeOutline(VectorTile.Tile.Feature.Builder oFeature, VectorTile.Tile.Layer.Builder oLayer, VectorTile.Tile.Builder oTile)
+//	{
+//		oFeature.clear();
+//		oLayer.clear();
+//		oLayer.setVersion(2);
+//		oLayer.setName("tile_outline");
+//		oLayer.setExtent(256);
+//		oFeature.setType(VectorTile.Tile.GeomType.LINESTRING);
+//		oFeature.addGeometry(command(MOVETO, 1));
+//		oFeature.addGeometry(parameter(0));
+//		oFeature.addGeometry(parameter(0));
+//		oFeature.addGeometry(command(LINETO, 4));
+//		oFeature.addGeometry(parameter(255));
+//		oFeature.addGeometry(parameter(0));
+//		oFeature.addGeometry(parameter(0));
+//		oFeature.addGeometry(parameter(255));
+//		oFeature.addGeometry(parameter(-255));
+//		oFeature.addGeometry(parameter(0));
+//		oFeature.addGeometry(parameter(0));
+//		oFeature.addGeometry(parameter(-255));
+//		oLayer.addFeatures(oFeature.build());
+//		oFeature.clear();
+//		oTile.addLayers(oLayer.build());
+//		oLayer.clear();
+//	}
+//	
+//	public static void writeBox(VectorTile.Tile.Feature.Builder oFeature, VectorTile.Tile.Layer.Builder oLayer, VectorTile.Tile.Builder oTile)
+//	{
+//		oFeature.clear();
+//		oLayer.clear();
+//		oLayer.setVersion(2);
+//		oLayer.setName("MRMS_RTEPC_10.0");
+//		oLayer.setExtent(256);
+//		oFeature.setType(VectorTile.Tile.GeomType.POLYGON);
+//		oFeature.addGeometry(command(MOVETO, 1));
+//		oFeature.addGeometry(parameter(128));
+//		oFeature.addGeometry(parameter(128));
+//		oFeature.addGeometry(command(LINETO, 3));
+//		oFeature.addGeometry(parameter(50));
+//		oFeature.addGeometry(parameter(0));
+//		oFeature.addGeometry(parameter(0));
+//		oFeature.addGeometry(parameter(50));
+//		oFeature.addGeometry(parameter(-50));
+//		oFeature.addGeometry(parameter(0));
+//		oFeature.addGeometry(command(CLOSEPATH, 1));
+//		oLayer.addFeatures(oFeature.build());
+//		oFeature.clear();
+//		oTile.addLayers(oLayer.build());
+//		oLayer.clear();
+//	}
+//	
 	
 	static Path2D.Double getPath(double[] dRing)
 	{

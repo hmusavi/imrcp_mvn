@@ -36,7 +36,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import vector_tile.VectorTile;
+//import vector_tile.VectorTile;
 
 /**
  *
@@ -317,10 +317,10 @@ public class TileServlet extends BaseBlock
 			}
 		}
 		Collections.sort(oLines, LINECOMP);
-		VectorTile.Tile.Builder oTileBuilder = VectorTile.Tile.newBuilder();
-		VectorTile.Tile.Layer.Builder oLayerBuilder = VectorTile.Tile.Layer.newBuilder();
-		VectorTile.Tile.Feature.Builder oFeatureBuilder = VectorTile.Tile.Feature.newBuilder();
-		VectorTile.Tile.Value.Builder oValueBuilder = VectorTile.Tile.Value.newBuilder();
+//		VectorTile.Tile.Builder oTileBuilder = VectorTile.Tile.newBuilder();
+//		VectorTile.Tile.Layer.Builder oLayerBuilder = VectorTile.Tile.Layer.newBuilder();
+//		VectorTile.Tile.Feature.Builder oFeatureBuilder = VectorTile.Tile.Feature.newBuilder();
+//		VectorTile.Tile.Value.Builder oValueBuilder = VectorTile.Tile.Value.newBuilder();
 		
 		int nExtent = Mercator.getExtent(nZ);
 		double dPrevVal;
@@ -331,33 +331,33 @@ public class TileServlet extends BaseBlock
 		{
 			double[] dLine = oLines.get(nIndex);
 			dPrevVal = dLine[0];
-			TileUtil.addLinestring(oFeatureBuilder, nCur, dBounds, nExtent, dLine, nPoints);
-			oLayerBuilder.addFeatures(oFeatureBuilder.build());
-			oFeatureBuilder.clear();
+//			TileUtil.addLinestring(oFeatureBuilder, nCur, dBounds, nExtent, dLine, nPoints);
+//			oLayerBuilder.addFeatures(oFeatureBuilder.build());
+//			oFeatureBuilder.clear();
 			nCur[0] = nCur[1] = 0;
-			if (nIndex == 0 || oLines.get(nIndex - 1)[0] != dPrevVal)
-			{ // write layer at end of list or when group value will change
-				oLayerBuilder.setVersion(2);
-				oLayerBuilder.setName(String.format("%s%1.0f", Integer.toString(nRequestType, 36).toUpperCase(), dPrevVal));
-				oLayerBuilder.setExtent(nExtent);
-				for (int i = 0; i < m_sKeys.length; i++)
-					oLayerBuilder.addKeys(m_sKeys[i]);
-				
-				for (int i = 0; i < m_sValues.length; i++)
-				{
-					oValueBuilder.setStringValue(m_sValues[i]);
-					oLayerBuilder.addValues(oValueBuilder.build());
-					oValueBuilder.clear();
-				}
-				oTileBuilder.addLayers(oLayerBuilder.build());
-				oLayerBuilder.clear();
-			}
+//			if (nIndex == 0 || oLines.get(nIndex - 1)[0] != dPrevVal)
+//			{ // write layer at end of list or when group value will change
+//				oLayerBuilder.setVersion(2);
+//				oLayerBuilder.setName(String.format("%s%1.0f", Integer.toString(nRequestType, 36).toUpperCase(), dPrevVal));
+//				oLayerBuilder.setExtent(nExtent);
+//				for (int i = 0; i < m_sKeys.length; i++)
+//					oLayerBuilder.addKeys(m_sKeys[i]);
+//				
+//				for (int i = 0; i < m_sValues.length; i++)
+//				{
+//					oValueBuilder.setStringValue(m_sValues[i]);
+//					oLayerBuilder.addValues(oValueBuilder.build());
+//					oValueBuilder.clear();
+//				}
+//				oTileBuilder.addLayers(oLayerBuilder.build());
+//				oLayerBuilder.clear();
+//			}
 		}
 
 		oResponse.setContentType("application/x-protobuf");
 //		oResponse.setHeader("Last-Modified", m_sLastModified);
-		if (oTileBuilder.getLayersCount() > 0)
-			oTileBuilder.build().writeTo(oResponse.getOutputStream());
+//		if (oTileBuilder.getLayersCount() > 0)
+//			oTileBuilder.build().writeTo(oResponse.getOutputStream());
 	}
 	
 	
@@ -374,9 +374,9 @@ public class TileServlet extends BaseBlock
 		int nLat2 = GeoUtil.toIntDeg(dLonLatBounds[3]);
 		int nLon2 = GeoUtil.toIntDeg(dLonLatBounds[2]);
 		
-		VectorTile.Tile.Builder oTileBuilder = VectorTile.Tile.newBuilder();
-		VectorTile.Tile.Layer.Builder oLayerBuilder = VectorTile.Tile.Layer.newBuilder();
-		VectorTile.Tile.Feature.Builder oFeatureBuilder = VectorTile.Tile.Feature.newBuilder();
+//		VectorTile.Tile.Builder oTileBuilder = VectorTile.Tile.newBuilder();
+//		VectorTile.Tile.Layer.Builder oLayerBuilder = VectorTile.Tile.Layer.newBuilder();
+//		VectorTile.Tile.Feature.Builder oFeatureBuilder = VectorTile.Tile.Feature.newBuilder();
 		int[] nCur = new int[2]; // reusable arrays for feature methods
 		int nExtent = Mercator.getExtent(nZ);
 		
@@ -425,20 +425,20 @@ public class TileServlet extends BaseBlock
 				}
 				
 				dPrevVal = oObs.m_dValue;
-				TileUtil.addPointToFeature(oFeatureBuilder, nCur, dBounds, nExtent, dLon, dLat);
-				oFeatureBuilder.setId(oObs.m_nObjId);
-				oFeatureBuilder.setType(VectorTile.Tile.GeomType.POINT);
-				oLayerBuilder.addFeatures(oFeatureBuilder.build());
-				oFeatureBuilder.clear();
-				nCur[0] = nCur[1] = 0;
-				if (nObsIndex == 0 || oData.get(nObsIndex - 1).m_dValue != dPrevVal)
-				{ // write layer at end of list or when group value will change
-					oLayerBuilder.setVersion(2);
-					oLayerBuilder.setName(String.format("%s%1.0f", Integer.toString(nRequestType, 36).toUpperCase(), dPrevVal));
-					oLayerBuilder.setExtent(nExtent);
-					oTileBuilder.addLayers(oLayerBuilder.build());
-					oLayerBuilder.clear();
-				}
+//				TileUtil.addPointToFeature(oFeatureBuilder, nCur, dBounds, nExtent, dLon, dLat);
+//				oFeatureBuilder.setId(oObs.m_nObjId);
+//				oFeatureBuilder.setType(VectorTile.Tile.GeomType.POINT);
+//				oLayerBuilder.addFeatures(oFeatureBuilder.build());
+//				oFeatureBuilder.clear();
+//				nCur[0] = nCur[1] = 0;
+//				if (nObsIndex == 0 || oData.get(nObsIndex - 1).m_dValue != dPrevVal)
+//				{ // write layer at end of list or when group value will change
+//					oLayerBuilder.setVersion(2);
+//					oLayerBuilder.setName(String.format("%s%1.0f", Integer.toString(nRequestType, 36).toUpperCase(), dPrevVal));
+//					oLayerBuilder.setExtent(nExtent);
+//					oTileBuilder.addLayers(oLayerBuilder.build());
+//					oLayerBuilder.clear();
+//				}
 			}
 		}
 		else
@@ -456,26 +456,26 @@ public class TileServlet extends BaseBlock
 				if (!oSensor.m_bInUse)
 					continue;
 				
-				TileUtil.addPointToFeature(oFeatureBuilder, nCur, dBounds, nExtent, GeoUtil.fromIntDeg(oSensor.m_nLon), GeoUtil.fromIntDeg(oSensor.m_nLat));
-				oFeatureBuilder.setType(VectorTile.Tile.GeomType.POINT);
-				oFeatureBuilder.setId(oSensor.m_nImrcpId);
-				oLayerBuilder.addFeatures(oFeatureBuilder.build());
-				oFeatureBuilder.clear();
+//				TileUtil.addPointToFeature(oFeatureBuilder, nCur, dBounds, nExtent, GeoUtil.fromIntDeg(oSensor.m_nLon), GeoUtil.fromIntDeg(oSensor.m_nLat));
+//				oFeatureBuilder.setType(VectorTile.Tile.GeomType.POINT);
+//				oFeatureBuilder.setId(oSensor.m_nImrcpId);
+//				oLayerBuilder.addFeatures(oFeatureBuilder.build());
+//				oFeatureBuilder.clear();
 				nCur[0] = nCur[1] = 0;
 			}
-			if (oLayerBuilder.getFeaturesCount() > 0)
-			{
-				oLayerBuilder.setVersion(2);
-				oLayerBuilder.setName(Integer.toString(nRequestType, 36).toUpperCase());
-				oLayerBuilder.setExtent(nExtent);
-				oTileBuilder.addLayers(oLayerBuilder.build());
-				oLayerBuilder.clear();
-			}
+//			if (oLayerBuilder.getFeaturesCount() > 0)
+//			{
+//				oLayerBuilder.setVersion(2);
+//				oLayerBuilder.setName(Integer.toString(nRequestType, 36).toUpperCase());
+//				oLayerBuilder.setExtent(nExtent);
+//				oTileBuilder.addLayers(oLayerBuilder.build());
+//				oLayerBuilder.clear();
+//			}
 		}
 		oResponse.setContentType("application/x-protobuf");
 //		oResponse.setHeader("Last-Modified", m_sLastModified);
-		if (oTileBuilder.getLayersCount() > 0)
-			oTileBuilder.build().writeTo(oResponse.getOutputStream());
+//		if (oTileBuilder.getLayersCount() > 0)
+//			oTileBuilder.build().writeTo(oResponse.getOutputStream());
 	}
 	
 	
@@ -518,9 +518,9 @@ public class TileServlet extends BaseBlock
 		}
 		Collections.sort(oAreas);
 		
-		VectorTile.Tile.Builder oTileBuilder = VectorTile.Tile.newBuilder();
-		VectorTile.Tile.Layer.Builder oLayerBuilder = VectorTile.Tile.Layer.newBuilder();
-		VectorTile.Tile.Feature.Builder oFeatureBuilder = VectorTile.Tile.Feature.newBuilder();
+//		VectorTile.Tile.Builder oTileBuilder = VectorTile.Tile.newBuilder();
+//		VectorTile.Tile.Layer.Builder oLayerBuilder = VectorTile.Tile.Layer.newBuilder();
+//		VectorTile.Tile.Feature.Builder oFeatureBuilder = VectorTile.Tile.Feature.newBuilder();
 		
 		int nExtent = Mercator.getExtent(nZ);
 		double dPrevVal;
@@ -540,27 +540,27 @@ public class TileServlet extends BaseBlock
 			oTilePath.closePath();
 			Area oTile = new Area(oTilePath);
 			oTile.intersect(oArea);
-			if (!oTile.isEmpty())
-				TileUtil.addPolygon(oFeatureBuilder, nCur, dBounds, nExtent, oTile, nPoints);
+//			if (!oTile.isEmpty())
+//				TileUtil.addPolygon(oFeatureBuilder, nCur, dBounds, nExtent, oTile, nPoints);
 
-			if (nIndex == 0 || oAreas.get(nIndex - 1).m_dGroupValue != dPrevVal)
-			{ // write layer at end of list or when group value will change
-				oFeatureBuilder.setType(VectorTile.Tile.GeomType.POLYGON);
-				oLayerBuilder.clear();
-				oLayerBuilder.setVersion(2);
-				oLayerBuilder.setName(String.format("%s%1.0f", "EVT", dPrevVal));
-				oLayerBuilder.setExtent(nExtent);
-				oLayerBuilder.addFeatures(oFeatureBuilder.build());
-				oTileBuilder.addLayers(oLayerBuilder.build());
-				oFeatureBuilder.clear();
-				nCur[0] = nCur[1] = 0;
-			}
+//			if (nIndex == 0 || oAreas.get(nIndex - 1).m_dGroupValue != dPrevVal)
+//			{ // write layer at end of list or when group value will change
+//				oFeatureBuilder.setType(VectorTile.Tile.GeomType.POLYGON);
+//				oLayerBuilder.clear();
+//				oLayerBuilder.setVersion(2);
+//				oLayerBuilder.setName(String.format("%s%1.0f", "EVT", dPrevVal));
+//				oLayerBuilder.setExtent(nExtent);
+//				oLayerBuilder.addFeatures(oFeatureBuilder.build());
+//				oTileBuilder.addLayers(oLayerBuilder.build());
+//				oFeatureBuilder.clear();
+//				nCur[0] = nCur[1] = 0;
+//			}
 		}
 
 		oResponse.setContentType("application/x-protobuf");
 //		oResponse.setHeader("Last-Modified", m_sLastModified);
-		if (oTileBuilder.getLayersCount() > 0)
-			oTileBuilder.build().writeTo(oResponse.getOutputStream());
+//		if (oTileBuilder.getLayersCount() > 0)
+//			oTileBuilder.build().writeTo(oResponse.getOutputStream());
 	}
 		
 	

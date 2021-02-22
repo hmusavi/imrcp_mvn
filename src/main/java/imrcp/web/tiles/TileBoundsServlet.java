@@ -10,7 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import vector_tile.VectorTile;
+//import vector_tile.VectorTile;
 
 /**
  *
@@ -22,13 +22,13 @@ public class TileBoundsServlet extends HttpServlet
 	protected void doGet(HttpServletRequest oRequest, HttpServletResponse oResponse)
 	   throws ServletException, IOException
 	{
-		VectorTile.Tile.Builder oTileBuilder = VectorTile.Tile.newBuilder();
-		VectorTile.Tile.Layer.Builder oLayerBuilder = VectorTile.Tile.Layer.newBuilder();
-		VectorTile.Tile.Feature.Builder oFeatureBuilder = VectorTile.Tile.Feature.newBuilder();
+//		VectorTile.Tile.Builder oTileBuilder = VectorTile.Tile.newBuilder();
+//		VectorTile.Tile.Layer.Builder oLayerBuilder = VectorTile.Tile.Layer.newBuilder();
+//		VectorTile.Tile.Feature.Builder oFeatureBuilder = VectorTile.Tile.Feature.newBuilder();
 		
-		TileUtil.writeOutline(oFeatureBuilder, oLayerBuilder, oTileBuilder);
-		oResponse.setContentType("application/x-protobuf");
-		if (oTileBuilder.getLayersCount() > 0)
-			oTileBuilder.build().writeTo(oResponse.getOutputStream());
+//		TileUtil.writeOutline(oFeatureBuilder, oLayerBuilder, oTileBuilder);
+//		oResponse.setContentType("application/x-protobuf");
+//		if (oTileBuilder.getLayersCount() > 0)
+//			oTileBuilder.build().writeTo(oResponse.getOutputStream());
 	}
 }
